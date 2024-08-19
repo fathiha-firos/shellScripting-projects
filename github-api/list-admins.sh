@@ -15,20 +15,20 @@ REPO_OWNER=$1
 REPO_NAME=$2
 
 # function to make a GET to request to github api
-function github_api_get{
-local endpoint="$1"
-local url="${API_URL}/${endpoint}"
+function github_api_get {
+	local endpoint="$1"
+	local url="${API_URL}/${endpoint}"
 
 # Sending an api get request to api url
 curl -s -u "${USER_NAME}:${TOKEN}" "$url"
 }
 
 #Function to list admins
-function list-admins{
+function list-admins {
 local endpoint="repos/${REPO_OWNER}/${REPO_NAME}/collaborators"
 collaborators=$(github_api_get "$endpoint" | jq -r '.[] | select(.permissions.admin == true) | .login')
 
-if[[ -z "$collaborators" ]]; then
+if [[ -z "$collaborators" ]]; then
 echo "No admins yet for the repo ${REPO_NAME}"
 else
 echo "The list of admins for ${REPO_OWNER}/${REPO_NAME} : "
